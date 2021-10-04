@@ -1,12 +1,9 @@
 {
-    "name": "RavenCoin",    
-    "symbol": "RVN",    
+    "name": "RavenCoin",
+    "symbol": "RVN",
     "algorithm": "x16r",
-    
-    "explorerGetBlockJSON": "http://rvnhodl.com/api/getrawtransaction?decrypt=1&txid=",
-    "explorerGetBlock": "http://rvnhodl.com/block/",
-    "explorerGetTX": "http://rvnhodl.com/tx/",
-    
+    "explorerGetBlockJSON": "http://www.threeeyed.info/api/getblock?hash=",
+    "explorerGetBlock": "http://threeeyed.info/block/",
+    "explorerGetTX": "http://www.threeeyed.info/api/getrawtransaction?txid={0}&decrypt=1",
     "blockTime": 60
-    
 }

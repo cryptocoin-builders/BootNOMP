@@ -1,10 +1,8 @@
-*~
-*.bak
-.git/
 node_modules/
 .idea/
 config.json
-logs/
 pool_configs/*.json
-!pool_configs/*_example.json
+!pool_configs/litecoin_example.json
+!pool_configs/vertcoin_example.json
+logs/
 !.gitkeep
