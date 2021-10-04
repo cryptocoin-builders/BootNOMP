@@ -1,0 +1,17 @@
+{
+		"name": "coin_name",
+		"symbol": "coin_symbol",
+		"algorithm": "coin_algo",
+
+		"wallet": "git_hub_link",
+
+		"explorer":"explorer_link",
+
+		"explorerGetBlockJSON": "get_block_api",
+		"explorerGetBlock": "block_explorer",
+		"explorerGetTX": "get_block_tx",
+
+		"blockTime": "coin_time",
+		"blockChange": "block_change"
+
+}

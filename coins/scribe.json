@@ -1,9 +1,0 @@
-{
-    "name": "Scribe",
-    "symbol": "SCRIBE",
-    "algorithm": "lyra2rev2",
-    "explorerGetBlockJSON": "http://explorer.scribe.network/api/getblock?hash=",
-    "explorerGetBlock": "https://explorer.scribe.network/block/",
-    "explorerGetTX": "http://explorer.scribe.network/api/getrawtransaction?txid={0}&decrypt=1",
-    "blockTime": 90 
-}
