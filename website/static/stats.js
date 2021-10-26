@@ -28,8 +28,8 @@ function buildChartData() {
       var pName = poolKeys[f];
       var a = pools[pName] = (pools[pName] || {
         hashrate: [],
-        workers: [],
-        blocks: []
+        workers: []
+        //blocks: []
       });
       if (pName in statData[i].pools) {
         a.hashrate.push([time, statData[i].pools[pName].hashrate]);

@@ -1,0 +1,9 @@
+{
+    "name": "Methuselah",
+    "symbol": "SAP",
+    "algorithm": "lyra2rev2",
+    "explorerGetBlockJSON": "https://explorer.methuselahcoin.io/api/block/",
+    "explorerGetBlock": "https://explorer.methuselahcoin.io/#/block/",
+    "explorerGetTX": "https://explorer.methuselahcoin.io/api/tx/{0}",
+    "blockTime": 135 
+}

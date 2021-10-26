@@ -1,0 +1,9 @@
+{
+    "name": "AceD",
+    "symbol": "ACED",
+    "algorithm": "x11",
+    "explorerGetBlockJSON": "http://explorer.acedcoin.com/api/getblock?hash=",
+    "explorerGetBlock": "http://explorer.acedcoin.com/block/",
+    "explorerGetTX": "http://explorer.acedcoin.com/api/getrawtransaction?txid={0}&decrypt=1",
+    "blockTime": 120
+}

@@ -275,7 +275,7 @@ function SetupForPool(poolOptions, setupFinished) {
            // handle duplicates if needed
             if (duplicateFound) {
                 var dups = rounds.filter(function(round){ return round.duplicate; });
-                logger.warning('Duplicate pending blocks found: ' + JSON.stringify(dups));
+                logger.warn('Duplicate pending blocks found: ' + JSON.stringify(dups));
                 // attempt to find the invalid duplicates
                 var rpcDupCheck = dups.map(function(r){
                     return ['getblock', [r.blockHash]];
@@ -294,14 +294,14 @@ function SetupForPool(poolOptions, setupFinished) {
                         if (block && block.result) {
                             // invalid duplicate submit blocks have negative confirmations
                             if (block.result.confirmations < 0) {
-                                logger.warning('Remove invalid duplicate block %s > %s', block.result.height, block.result.hash);
+                                logger.warn('Remove invalid duplicate block %s > %s', block.result.height, block.result.hash);
                                 // move from blocksPending to blocksDuplicate...
                                 invalidBlocks.push(['smove', coin + ':blocksPending', coin + ':blocksDuplicate', dups[i].serialized]);
                             } else {
                                 // block must be valid, make sure it is unique
                                 if (validBlocks.hasOwnProperty(dups[i].blockHash)) {
                                     // not unique duplicate block
-                                    logger.warning('Remove non-unique duplicate block %s > %s', block.result.height, block.result.hash);
+                                    logger.warn('Remove non-unique duplicate block %s > %s', block.result.height, block.result.hash);
                                     // move from blocksPending to blocksDuplicate...
                                     invalidBlocks.push(['smove', coin + ':blocksPending', coin + ':blocksDuplicate', dups[i].serialized]);
                                 } else {
@@ -646,42 +646,12 @@ function SetupForPool(poolOptions, setupFinished) {
 
           logger.info('Payments to miners: %s', JSON.stringify(addressAmounts));
 
-    	  var feeAddresses = [];
-    
-    	  var rewardAddresses = poolOptions.rewardRecipients;
-
-//	     rewardAddresses = rewardAddresses.substring(1, rewardAddresses.length());
-//	     rewardAddresses = rewardAddresses.substring(0, rewardAddresses.length() - 1);
-//	     rewardAddresses = "{" + rewardAddresses + "}";
-
-
-          /* THIS IS PAYMENT AMOUNTS */
           Object.keys(addressAmounts).forEach((address) => {
             addressAmounts[address] = new BigNumber(addressAmounts[address].toFixed(coinPrecision, 1)).toNumber();
           });
 
-
-          /* THIS WILL CHARGE PORTION OF TXFEES TO POOL */
-          Object.keys(addressAmounts).forEach((address) => {
-              feeAddresses.push(address);// = new BigNumber(0.00000000);
-          });
-
-//          Object.keys(rewardAddresses).forEach((rewardaddy) => {
-//            addressAmounts[rewardaddy] = 0.00000000;
-//          });
-            
-          /* LIST EACH PAYEE AS PAYING FEES (WILL ADD CFG OPTION FOR THIS) */
-          Object.keys(rewardAddresses).forEach((feeaddy) => {
-            feeAddresses.push(feeaddy);// = 0.0;
-          });
-          
-
           logger.info('Ok, going to pay from "%s" address with final amounts: %s', addressAccount, JSON.stringify(addressAmounts));
-          logger.info('Ok, going to pay FEES from "%s" addresses: %s', feeAddresses, JSON.stringify(feeAddresses));
-
-
-          /* CHANGED TO INSTANTSEND (NEEDS CONFIG OPTION) */
-          daemon.cmd('sendmany', [addressAccount || '', addressAmounts, 0, false, "Miner Payment", feeAddresses, false, false], function(result) {
+          daemon.cmd('sendmany', [addressAccount || '', addressAmounts], function(result) {
             //Check if payments failed because wallet doesn't have enough coins to pay for tx fees
             if (result.error && result.error.code === -6) {
               var higherPercent = withholdPercent.plus(new BigNumber(0.01));
@@ -708,17 +678,14 @@ function SetupForPool(poolOptions, setupFinished) {
               }
               // save payments data to redis
               var paymentBlocks = rounds.filter(r => r.category == 'generate').map(r => parseInt(r.height));
-	          var paymentBlockID = rounds.filter(r => r.category == 'generate').map(r => r.blockHash);
               var paymentsUpdate = [];
               var paymentsData = {
                 time: Date.now(),
                 txid: txid,
-                txidd: txid,
                 shares: totalShares,
                 paid: totalSent,
                 miners: Object.keys(addressAmounts).length,
                 blocks: paymentBlocks,
-		        blkid: paymentBlockID,
                 amounts: addressAmounts,
                 balances: balanceAmounts,
                 work: shareAmounts
@@ -895,14 +862,8 @@ function SetupForPool(poolOptions, setupFinished) {
 
   var getProperAddress = function(address) {
     if (address.length === 40) {
-
-      /* WAS GETTING ISSUES WITH WORKERNAME HAVING A '.' */ 
-
-      var res = address.split(".")
-      return util.addressFromEx(poolOptions.address, res[0]);
-
+      return util.addressFromEx(poolOptions.address, address);
     } else return address;
-    return address;
   };
 
 
